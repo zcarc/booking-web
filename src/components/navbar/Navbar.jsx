@@ -4,10 +4,10 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navContainer">
-        <span className="logo">booking</span>
+        <span className="logo">Booking</span>
         <div className="navItems">
-          <button className="navButton">Register</button>
-          <button className="navButton">Login</button>
+          <button className="navButton">가입하기</button>
+          <button className="navButton">로그인</button>
         </div>
       </div>
     </div>
