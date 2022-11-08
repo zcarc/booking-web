@@ -102,7 +102,6 @@ const Hotel = () => {
                   src={photo.src}
                   alt=""
                   className="hotelImg"
-                  // draggable="false"
                 />
               </div>
             ))}
