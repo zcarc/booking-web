@@ -5,6 +5,7 @@ import {
   faBed,
   faCalendarDays,
   faCar,
+  faLandmark,
   faPerson,
   faPlane,
   faTaxi,
@@ -70,7 +71,7 @@ const Header = ({ type }) => {
             <span>렌터카</span>
           </div>
           <div className="headerListItem">
-            <FontAwesomeIcon icon={faBed} />
+            <FontAwesomeIcon icon={faLandmark} />
             <span>투어 & 액티비티</span>
           </div>
           <div className="headerListItem">
