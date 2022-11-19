@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import { ko } from "date-fns/locale";
+import useFetch from "../../hooks/useFetch";
 
 const List = () => {
   const location = useLocation();
@@ -15,6 +16,18 @@ const List = () => {
   const [date, setDate] = useState(location.state.date);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(location.state.options);
+  const [min, setMin] = useState(undefined);
+  const [max, setMax] = useState(undefined);
+
+  const { data, loading, error, reFetch } = useFetch(
+    `http://localhost:8800/hotels?city=${destination}&min=${min || 0}&max=${
+      max || 999
+    }`
+  );
+
+  const handleSearch = () => {
+    reFetch();
+  };
 
   return (
     <div>
@@ -52,11 +65,19 @@ const List = () => {
               <div className="lsOptions">
                 <div className="lsOptionItem">
                   <span className="lsOptionText">최저가 (1박 기준)</span>
-                  <input type="number" className="lsOptionInput" />
+                  <input
+                    type="number"
+                    onChange={(e) => setMin(e.target.value)}
+                    className="lsOptionInput"
+                  />
                 </div>
                 <div className="lsOptionItem">
                   <span className="lsOptionText">최고가 (1박 기준)</span>
-                  <input type="number" className="lsOptionInput" />
+                  <input
+                    type="number"
+                    onChange={(e) => setMax(e.target.value)}
+                    className="lsOptionInput"
+                  />
                 </div>
                 <div className="lsOptionItem">
                   <span className="lsOptionText">성인</span>
@@ -87,15 +108,12 @@ const List = () => {
                 </div>
               </div>
             </div>
-            <button>검색</button>
+            <button onClick={handleSearch}>검색</button>
           </div>
           <div className="listResult">
-            <SearchItem />
-            <SearchItem />
-            <SearchItem />
-            <SearchItem />
-            <SearchItem />
-            <SearchItem />
+            {loading
+              ? "Loading"
+              : data.map((item) => <SearchItem item={item} key={item._id} />)}
           </div>
         </div>
       </div>
