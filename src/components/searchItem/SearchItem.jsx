@@ -1,37 +1,34 @@
+import { Link } from "react-router-dom";
 import "./searchItem.css";
 
-const SearchItem = () => {
+const SearchItem = ({ item }) => {
   return (
     <div className="searchItem">
-      <img
-        src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
-        alt=""
-        className="siImg"
-      />
+      <img src={item.photos[0]} alt="" className="siImg" />
       <div className="siDesc">
-        <h1 className="siTitle">Tower Street Apartments</h1>
-        <span className="siDistance">500m from center</span>
-        <span className="siTaxiOp">Free airport taxi</span>
-        <span className="siSubtitle">
-          Studio Apartment with Air conditioning
-        </span>
-        <span className="siFeatures">
-          Entire studio • 1 bathroom • 21m² 1 full bed
-        </span>
-        <span className="siCancelOp">Free cancellation </span>
+        <h1 className="siTitle">{item.name}</h1>
+        <span className="siDistance">중심부에서 {item.distance}m</span>
+        <span className="siTaxiOp">무료 공항 택시</span>
+        <span className="siSubtitle">스튜디오 아파트 - 에어컨</span>
+        <span className="siFeatures">{item.desc}</span>
+        <span className="siCancelOp">무료 취소</span>
         <span className="siCancelOpSubtitle">
-          You can cancel later, so lock in this great price today!
+          나중에 취소 가능한 최저가를 지금 잡아놓으세요.
         </span>
       </div>
       <div className="siDetails">
-        <div className="siRating">
-          <span>Excellent</span>
-          <button>8.9</button>
-        </div>
+        {item.rating ? (
+          <div className="siRating">
+            <span>우수함</span>
+            <button>{item.rating}</button>
+          </div>
+        ) : null}
         <div className="siDetailTexts">
-          <span className="siPrice">$123</span>
-          <span className="siTexOp">Includes taxes and fees</span>
-          <button className="siCheckButton">See availability</button>
+          <span className="siPrice">${item.cheapestPrice}</span>
+          <span className="siTexOp">세금 및 기타 요금 포함</span>
+          <Link to={`/hotels/${item._id}`}>
+            <button className="siCheckButton">예약 가능 옵션 보기</button>
+          </Link>
         </div>
       </div>
     </div>
