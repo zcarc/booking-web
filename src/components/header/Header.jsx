@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({ type }) => {
@@ -92,7 +93,7 @@ const Header = ({ type }) => {
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
                 <input
                   type="text"
-                  placeholder="Where are you going?"
+                  placeholder="어디로 향하시나요?"
                   className="headerSearchInput"
                   onChange={(e) => setDestination(e.target.value)}
                 />
@@ -102,10 +103,11 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
-                >{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
-                  date[0].endDate,
-                  "MM/dd/yyyy"
-                )}`}</span>
+                >{`${format(date[0].startDate, "MMM do (EEEEE)", {
+                  locale: ko,
+                })} - ${format(date[0].endDate, "MMM do (EEEEE)", {
+                  locale: ko,
+                })}`}</span>
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
@@ -123,12 +125,12 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenOptions(!openOptions)}
                   className="headerSearchText"
-                >{`${options.adult} adults • ${options.children} children • ${options.room} room`}</span>
+                >{`${options.adult} 성인 • ${options.children} 아동 • ${options.room} 객실`}</span>
 
                 {openOptions && (
                   <div className="options">
                     <div className="optionItem">
-                      <span className="optionText">Adult</span>
+                      <span className="optionText">성인</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.adult <= 1}
@@ -149,7 +151,7 @@ const Header = ({ type }) => {
                       </div>
                     </div>
                     <div className="optionItem">
-                      <span className="optionText">Children</span>
+                      <span className="optionText">어린이</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.children <= 0}
@@ -170,7 +172,7 @@ const Header = ({ type }) => {
                       </div>
                     </div>
                     <div className="optionItem">
-                      <span className="optionText">Room</span>
+                      <span className="optionText">객실</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.room <= 1}
@@ -195,7 +197,7 @@ const Header = ({ type }) => {
               </div>
               <div className="headerSearchItem">
                 <button className="headerBtn" onClick={handleSearch}>
-                  Search
+                  검색
                 </button>
               </div>
             </div>
