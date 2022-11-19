@@ -6,6 +6,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
+import { ko } from "date-fns/locale";
 
 const List = () => {
   const location = useLocation();
@@ -22,17 +23,22 @@ const List = () => {
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
-            <h1 className="lsTitle">Search</h1>
+            <h1 className="lsTitle">검색</h1>
             <div className="lsItem">
-              <label htmlFor="">Destination</label>
+              <label htmlFor="">여행지/숙소 이름</label>
               <input type="text" placeholder={destination} />
             </div>
             <div className="lsItem">
-              <label htmlFor="">Check-in Date</label>
+              <label htmlFor="">체크인 날짜</label>
               <span onClick={() => setOpenDate(!openDate)}>{`${format(
                 date[0].startDate,
-                "MM/dd/yyyy"
-              )} to ${format(date[0].endDate, "MM/dd/yyyy")}`}</span>
+                "MMM do (EEEEE)",
+                {
+                  locale: ko,
+                }
+              )} - ${format(date[0].endDate, "MMM do (EEEEE)", {
+                locale: ko,
+              })}`}</span>
               {openDate && (
                 <DateRange
                   onChange={(item) => setDate([item.selection])}
@@ -42,22 +48,18 @@ const List = () => {
               )}
             </div>
             <div className="lsItem">
-              <label htmlFor="">Options</label>
+              <label htmlFor="">옵션</label>
               <div className="lsOptions">
                 <div className="lsOptionItem">
-                  <span className="lsOptionText">
-                    Min price <small>per night</small>
-                  </span>
+                  <span className="lsOptionText">최저가 (1박 기준)</span>
                   <input type="number" className="lsOptionInput" />
                 </div>
                 <div className="lsOptionItem">
-                  <span className="lsOptionText">
-                    Max price <small>per night</small>
-                  </span>
+                  <span className="lsOptionText">최고가 (1박 기준)</span>
                   <input type="number" className="lsOptionInput" />
                 </div>
                 <div className="lsOptionItem">
-                  <span className="lsOptionText">Adult</span>
+                  <span className="lsOptionText">성인</span>
                   <input
                     type="number"
                     min={1}
@@ -66,7 +68,7 @@ const List = () => {
                   />
                 </div>
                 <div className="lsOptionItem">
-                  <span className="lsOptionText">Children</span>
+                  <span className="lsOptionText">아동</span>
                   <input
                     type="number"
                     min={0}
@@ -75,7 +77,7 @@ const List = () => {
                   />
                 </div>
                 <div className="lsOptionItem">
-                  <span className="lsOptionText">Room</span>
+                  <span className="lsOptionText">객실</span>
                   <input
                     type="number"
                     min={1}
@@ -85,7 +87,7 @@ const List = () => {
                 </div>
               </div>
             </div>
-            <button>Search</button>
+            <button>검색</button>
           </div>
           <div className="listResult">
             <SearchItem />
