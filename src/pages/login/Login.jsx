@@ -42,7 +42,7 @@ const Login = () => {
 
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data,
+        payload: res.data.details,
       });
 
       navigate("/");
@@ -76,6 +76,7 @@ const Login = () => {
         <button className="lButton" onClick={handleClick} disabled={loading}>
           로그인
         </button>
+        {error && <span>{error.message}</span>}
       </div>
     </div>
   );
