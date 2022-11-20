@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { NEW_SEARCH, SearchContext } from "../context/SearchContext";
+import { AuthContext } from "../context/AuthContext";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -49,6 +50,7 @@ const Header = ({ type }) => {
   };
 
   const { dispatch } = useContext(SearchContext);
+  const { user } = useContext(AuthContext);
 
   const handleSearch = () => {
     dispatch({
@@ -94,7 +96,7 @@ const Header = ({ type }) => {
             <p className="headerDesc">
               올해가 끝나기 전에 위시리스트에 담아 둔 여행지로 떠나보세요
             </p>
-            <button className="headerBtn">특가 둘러보기</button>
+            {!user && <button className="headerBtn">로그인 / 가입하기</button>}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
