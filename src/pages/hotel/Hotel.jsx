@@ -11,13 +11,16 @@ import Header from "../../components/header/Header";
 import Navbar from "../../components/navbar/Navbar";
 import MailList from "../../components/mailList/MailList";
 import Footer from "../../components/footer/Footer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../components/context/SearchContext";
+import { AuthContext } from "../../components/context/AuthContext";
+import Reserve from "../../components/reserve/Reserve";
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -27,6 +30,9 @@ const Hotel = () => {
   );
 
   const { dates, options } = useContext(SearchContext);
+  const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -52,6 +58,17 @@ const Hotel = () => {
     }
 
     setSlideNumber(newSlideNumber);
+  };
+
+  const handleClick = () => {
+    console.log("handleClick... user: ", user);
+    if (user) {
+      // 로그인이 되어있다면 모달 오픈
+      setOpenModal(true);
+    } else {
+      // 예약했을 때, 로그인이 안되어있다면 로그인 페이지로 이동
+      navigate("/login");
+    }
   };
 
   return (
@@ -89,7 +106,9 @@ const Hotel = () => {
             </div>
           )}
           <div className="hotelWrapper">
-            <button className="bookNow">지금 예약</button>
+            <button className="bookNow" onClick={handleClick}>
+              지금 예약
+            </button>
             <h1 className="hotelTitle">{data.name}</h1>
             <div className="hotelAddress">
               <FontAwesomeIcon icon={faLocationDot} />
@@ -129,7 +148,7 @@ const Hotel = () => {
                   <b>${days * data.cheapestPrice * options.room}</b> ({days}박
                   기준)
                 </h2>
-                <button>지금 예약</button>
+                <button onClick={handleClick}>지금 예약</button>
               </div>
             </div>
           </div>
@@ -137,6 +156,7 @@ const Hotel = () => {
           <Footer />
         </div>
       )}
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };
