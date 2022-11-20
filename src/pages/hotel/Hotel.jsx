@@ -6,13 +6,14 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Header from "../../components/header/Header";
 import Navbar from "../../components/navbar/Navbar";
 import MailList from "../../components/mailList/MailList";
 import Footer from "../../components/footer/Footer";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import { SearchContext } from "../../components/context/SearchContext";
 
 const Hotel = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -24,6 +25,17 @@ const Hotel = () => {
   const { data, loading, error } = useFetch(
     `http://localhost:8800/hotels/find/${id}`
   );
+
+  const { dates, options } = useContext(SearchContext);
+
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -108,13 +120,14 @@ const Hotel = () => {
                 <p className="hotelDesc">{data.desc}</p>
               </div>
               <div className="hotelDetailsPrice">
-                <h1>2인 숙박에 최적</h1>
+                <h1>{days}일 숙박에 최적</h1>
                 <span>
                   커플들이 선호하는 지역 — 커플 투숙에 평점 9.3점을
                   획득하였습니다
                 </span>
                 <h2>
-                  <b>$150</b> (1박 기준)
+                  <b>${days * data.cheapestPrice * options.room}</b> ({days}박
+                  기준)
                 </h2>
                 <button>지금 예약</button>
               </div>
