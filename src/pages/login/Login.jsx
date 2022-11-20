@@ -35,7 +35,10 @@ const Login = () => {
     try {
       const res = await axios.post(
         "http://localhost:8800/auth/login",
-        credentials
+        credentials,
+        {
+          withCredentials: true, // CORS 요청 시, 브라우저에 cookie 설정
+        }
       );
 
       console.log("res.data: ", res.data);
